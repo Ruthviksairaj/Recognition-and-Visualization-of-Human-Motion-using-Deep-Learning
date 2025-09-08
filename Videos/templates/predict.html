@@ -1,0 +1,122 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body p-4">
+                <h2 class="card-title text-center mb-4">
+                    <i class="fas fa-video me-2"></i>Activity Prediction
+                </h2>
+                <form method="POST" enctype="multipart/form-data" id="predictionForm">
+                    <div class="mb-4">
+                        <label for="dataFile" class="form-label">
+                            <i class="fas fa-upload me-2"></i>Upload Video
+                        </label>
+                        <input type="file" class="form-control" id="dataFile" name="video" 
+                               accept=".mp4,.avi,.mov,.jpg,.jpeg,.png" required onchange="previewVideo(this)">
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Supported formats: MP4, AVI, MOV, JPG, JPEG, PNG
+                        </div>
+                    </div>
+
+                    <!-- Add video preview container -->
+                    <div class="mb-4" id="videoPreviewContainer" style="display: none;">
+                        <label class="form-label">
+                            <i class="fas fa-film me-2"></i>Video Preview
+                        </label>
+                        <video id="videoPreview" controls class="w-100 rounded" style="max-height: 300px;">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="activityType" class="form-label">
+                            <i class="fas fa-running me-2"></i>Expected Activity
+                        </label>
+                        <select class="form-select" id="activityType" name="activity_type">
+                            <option value="standing">Standing Still</option>
+                            <option value="walking">Walking</option>
+                            <option value="sitting">Sitting</option>
+                            <option value="clapping">Clapping</option>
+                            <option value="meet_split">Meet and Split</option>
+                            <option value="walking_reading">Walking While Reading Book</option>
+                            <option value="walking_phone">Walking While Using Phone</option>
+                        </select>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-custom btn-lg">
+                            <i class="fas fa-brain me-2"></i>Predict Activity
+                        </button>
+                    </div>
+                </form>
+
+                {% if prediction %}
+                <div class="mt-5 prediction-result">
+                    <h3 class="text-center mb-4">
+                        <i class="fas fa-chart-bar me-2"></i>Prediction Result
+                    </h3>
+                    <div class="card {% if prediction.lower() == activity_type.lower() %}bg-success{% else %}bg-warning{% endif %} text-white">
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="mb-2">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        <strong>Predicted:</strong> {{ prediction }}
+                                    </p>
+                                    <p class="mb-2">
+                                        <i class="fas fa-flag me-2"></i>
+                                        <strong>Expected:</strong> {{ activity_type }}
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="text-center">
+                                        <h4>Confidence</h4>
+                                        <div class="display-4">{{ "%.2f"|format(confidence * 100) }}%</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+function previewVideo(input) {
+    const videoPreview = document.getElementById('videoPreview');
+    const container = document.getElementById('videoPreviewContainer');
+    
+    if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const videoURL = URL.createObjectURL(file);
+        videoPreview.src = videoURL;
+        container.style.display = 'block';
+        
+        // Clean up the URL when the video is loaded
+        videoPreview.onloadeddata = function() {
+            URL.revokeObjectURL(videoURL);
+        };
+    } else {
+        container.style.display = 'none';
+        videoPreview.src = '';
+    }
+}
+
+document.getElementById('predictionForm').onsubmit = function(e) {
+    const submitBtn = this.querySelector('button[type="submit"]');
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+    submitBtn.disabled = true;
+    
+    // Clear video preview when form is submitted
+    const container = document.getElementById('videoPreviewContainer');
+    container.style.display = 'none';
+};
+</script>
+{% endblock %}
+{% endblock %}

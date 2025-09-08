@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Activity Recognition</title>
+</head>
+<body>
+    <h1>Upload a Video</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="video" accept="video/*"> 
+        <input type="submit" value="Predict">
+    </form>
+    <div id="result"></div>
+
+    <script>
+        const form = document.querySelector('form');
+        const resultDiv = document.getElementById('result');
+
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(form);
+
+            const response = await fetch('/', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            resultDiv.innerHTML = `<h2>Predicted Activity: ${data.prediction}</h2>`;
+        });
+    </script>
+</body>
+</html>

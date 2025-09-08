@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Activity Recognition</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f8f9fa;
+            padding: 2rem;
+        }
+        .main-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .title i {
+            font-size: 2rem;
+        }
+        .predict-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            width: fit-content;
+        }
+        .predict-btn:hover {
+            background-color: #45a049;
+            color: white;
+        }
+        .activity-list {
+            margin-top: 2rem;
+        }
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0;
+        }
+        .activity-item i {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="title">
+            <i class="fas fa-video"></i>
+            <h1>Activity Recognition</h1>
+        </div>
+
+        <p class="lead">
+            Upload a video to predict human activities using our advanced AI model.
+        </p>
+
+        <a href="{{ url_for('predict') }}" class="predict-btn">
+            <i class="fas fa-play"></i>
+            Start Prediction
+        </a>
+
+        <div class="activity-list">
+            <h3>Supported Activities:</h3>
+            <div class="activity-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Clapping</span>
+            </div>
+            <div class="activity-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Meet and Split</span>
+            </div>
+            <div class="activity-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Sitting</span>
+            </div>
+            <div class="activity-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Standing Still</span>
+            </div>
+            <div class="activity-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Walking</span>
+            </div>
+            <div class="activity-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Walking While Reading Book</span>
+            </div>
+            <div class="activity-item">
+                <i class="fas fa-check-circle"></i>
+                <span>Walking While Using Phone</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
